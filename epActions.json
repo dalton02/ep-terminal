@@ -1,0 +1,34 @@
+
+{
+    "title":"EP",
+    "options":[
+        {
+            "title":"Execute ping",
+            "cmd":"",
+            "options":[
+                {
+                    "title":"google.com",
+                    "cmd":"ping google.com",
+                    "options":[]
+                },
+                {
+                    "title":"facebook.com",
+                    "cmd":"ping facebook.com",
+                    "options":[]
+                }
+            ]
+        },
+        {
+            "title":"Test .env variables",
+            "cmd":"",
+            "options":[
+                {
+                    "title":"Call EP_ENV",
+                    "cmd":"echo {env.EP}",
+                    "options":[]
+                }
+            ]
+        }
+    ],
+    "cmd":""    
+}
