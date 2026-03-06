@@ -54,6 +54,10 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 				m.y = 0
 			}
 		case "backspace":
+
+			if m.currentTask.Processing {
+				m.currentTask.Messagers.Global <- "kill-process"
+			}
 			if m.currentTask.Prev != nil {
 				m.currentTask.CurrentContentCMD = ""
 				m.currentTask = m.currentTask.Prev
@@ -83,7 +87,7 @@ func (m model) View() tea.View {
 	v.Content += "\n"
 
 	if m.currentTask.Prev != nil {
-		text := "Inside: (" + m.currentTask.Title + ")"
+		text := "Context: " + m.currentTask.Title
 		v.Content += styles.MediumRetroStyle.Background(lipgloss.Color("")).Render(text)
 		v.Content += "\n\n"
 
@@ -103,12 +107,14 @@ func (m model) View() tea.View {
 
 	if m.currentTask.CurrentContentCMD != "" {
 
-		v.Content += styles.OutputCMDStyle.Render(m.currentTask.CurrentContentCMD)
+		v.Content += styles.OutputCMDStyle.Foreground(lipgloss.Color("#ececec")).Render("\n --- Command execution below ---")
+		v.Content += "\n\n"
+		v.Content += styles.OutputCMDStyle.Foreground(lipgloss.Color("#e2e2e2")).Render(m.currentTask.CurrentContentCMD)
 
 		if m.currentTask.Processing {
-			v.Content += styles.OutputCMDStyle.Render("\nPress ctrl+c or q to cancel operation in execution", m.spinner.View())
+			v.Content += styles.OutputCMDStyle.Foreground(lipgloss.Color("#e2e2e2")).Render("\nPress ctrl+c or q to cancel operation in execution", m.spinner.View())
 		} else {
-			v.Content += styles.OutputCMDStyle.Render("Command finished: \n")
+			v.Content += styles.OutputCMDStyle.Foreground(lipgloss.Color("#ececec")).Render("\n ------ Command finished ------\n")
 
 		}
 

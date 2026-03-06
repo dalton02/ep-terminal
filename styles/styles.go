@@ -3,8 +3,8 @@ package styles
 import "charm.land/lipgloss/v2"
 
 var (
-	titleC  = lipgloss.Color("#7fd1ae")
-	optionC = lipgloss.Color("#d7d7d7")
+	titleC  = lipgloss.Color("#FF3E9B")
+	optionC = lipgloss.Color("#66D0BC")
 )
 
 var BigRetroStyle = lipgloss.NewStyle().
@@ -13,7 +13,7 @@ var BigRetroStyle = lipgloss.NewStyle().
 
 var MediumRetroStyle = lipgloss.NewStyle().
 	Bold(true).
-	Background(lipgloss.Color("#676767")).
+	Background(lipgloss.Color("#494949")).
 	Foreground(optionC).Width(50)
 
 var OutputCMDStyle = lipgloss.NewStyle().

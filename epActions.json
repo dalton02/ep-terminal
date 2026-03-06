@@ -7,13 +7,15 @@
             "options":[
                 {
                     "title":"google.com",
-                    "cmd":"ping google.com"
+                    "cmd":"docker compose -f test.yml up --build"
                 },
                 {
                     "title":"facebook.com",
                     "cmd":"ping facebook.com"
                 }
-            ]
+            ],
+            "env":".env.test"
+
         },
         {
             "title":"Test .env variables",
@@ -22,7 +24,8 @@
                     "title":"Call EP_ENV",
                     "cmd":"echo {env.EP}"
                 }
-            ]
+            ],
+            "env":".env"
         }
     ]
 }
