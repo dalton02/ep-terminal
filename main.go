@@ -8,6 +8,7 @@ import (
 	"os"
 	"strconv"
 
+	"charm.land/bubbles/v2/spinner"
 	tea "charm.land/bubbletea/v2"
 	"charm.land/lipgloss/v2"
 	"github.com/common-nighthawk/go-figure"
@@ -18,15 +19,17 @@ type model struct {
 	x           int
 	blink       bool
 	currentTask *task.Task
+	spinner     spinner.Model
 }
 
 func (m model) Init() tea.Cmd {
-	return nil
+	return m.spinner.Tick
 }
 
 func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 
 	switch msg := msg.(type) {
+
 	case tea.KeyPressMsg:
 		switch msg.String() {
 
@@ -64,6 +67,11 @@ func (m model) Update(msg tea.Msg) (tea.Model, tea.Cmd) {
 			}
 			return m, tea.Quit
 		}
+	default:
+		var cmd tea.Cmd
+		m.spinner, cmd = m.spinner.Update(msg)
+		return m, cmd
+
 	}
 	return m, nil
 }
@@ -94,11 +102,20 @@ func (m model) View() tea.View {
 	}
 
 	if m.currentTask.CurrentContentCMD != "" {
-		v.Content += styles.OutputCMDStyle.Render("Processing command: \n")
-		v.Content += styles.OutputCMDStyle.Render("\n" + m.currentTask.CurrentContentCMD)
-		v.Content += styles.OutputCMDStyle.Render("\nPress ctrl+c or q to cancel operation\n")
+
+		v.Content += styles.OutputCMDStyle.Render(m.currentTask.CurrentContentCMD)
+
+		if m.currentTask.Processing {
+			v.Content += styles.OutputCMDStyle.Render("\nPress ctrl+c or q to cancel operation in execution", m.spinner.View())
+		} else {
+			v.Content += styles.OutputCMDStyle.Render("Command finished: \n")
+
+		}
+
 	}
 	v.Content += "\n"
+	v.Content += styles.MediumRetroStyle.Background(lipgloss.Color("")).MarginLeft(2).Render("Help: \nUse ↑ ↓ to move between options\nSpace/Enter to select\nBackSpace to go back")
+
 	return v
 }
 
@@ -112,7 +129,10 @@ func main() {
 		currentTask: tasks,
 		y:           0,
 	}
-
+	s := spinner.New()
+	s.Spinner = spinner.MiniDot
+	s.Style = lipgloss.NewStyle().Foreground(lipgloss.Color("#ececec"))
+	m.spinner = s
 	global.Program = tea.NewProgram(m)
 	if _, err := global.Program.Run(); err != nil {
 		fmt.Fprintf(os.Stderr, "Error: %v", err)

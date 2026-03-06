@@ -136,7 +136,6 @@ func (t *Task) ExecuteCommand() error {
 
 		for scanner.Scan() {
 			line := scanner.Text()
-
 			t.CurrentContentCMD += line + "\n"
 			type force struct{}
 			global.Program.Send(force{})

@@ -18,5 +18,4 @@ var MediumRetroStyle = lipgloss.NewStyle().
 
 var OutputCMDStyle = lipgloss.NewStyle().
 	Bold(true).
-	MarginLeft(2).
-	Foreground(optionC).Width(50)
+	MarginLeft(2)

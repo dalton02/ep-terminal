@@ -4,31 +4,25 @@
     "options":[
         {
             "title":"Execute ping",
-            "cmd":"",
             "options":[
                 {
                     "title":"google.com",
-                    "cmd":"ping google.com",
-                    "options":[]
+                    "cmd":"ping google.com"
                 },
                 {
                     "title":"facebook.com",
-                    "cmd":"ping facebook.com",
-                    "options":[]
+                    "cmd":"ping facebook.com"
                 }
             ]
         },
         {
             "title":"Test .env variables",
-            "cmd":"",
             "options":[
                 {
                     "title":"Call EP_ENV",
-                    "cmd":"echo {env.EP}",
-                    "options":[]
+                    "cmd":"echo {env.EP}"
                 }
             ]
         }
-    ],
-    "cmd":""    
+    ]
 }
